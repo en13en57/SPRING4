@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- Security 권한 설정 -->
+	<security:http auto-config="true">
+		<security:intercept-url pattern="/" access="permitAll" />
+		<security:intercept-url pattern="/home" access="permitAll" />
+		<security:intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/dba**" access="hasRole('ADMIN') or hasRole('DBA')" />
+		<!-- 사용자가 만든 로그인 폼을 사용하기 위해서는 이 부분을 수정해 준다. -->
+		<security:form-login
+		login-page="/login"
+		username-parameter="userid"
+		password-parameter="password"
+		 authentication-failure-url="/Access_Denied" />
+	</security:http>
+	
+	<!-- Security 사용자 설정 -->
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:user-service>
+				<security:user name="bill" password="1234" authorities="ROLE_USER" />
+				<security:user name="admin" password="1234" authorities="ROLE_ADMIN,ROLE_DBA" />
+				<security:user name="dba" password="1234" authorities="ROLE_DBA" />
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>

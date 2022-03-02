@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- 프로퍼티 파일을 사용하겠다. -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!-- DB 연동 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${o.driver}"></property>
+		<property name="url" value="${o.url}"></property>
+		<property name="username" value="${o.username}"></property>
+		<property name="password" value="${o.password}"></property>
+	</bean>
+	
+	<!-- Security 권한 설정 -->
+	<security:http auto-config="true" use-expressions="true">
+        <security:intercept-url pattern="/" access="permitAll" />
+        <security:intercept-url pattern="/home" access="permitAll" />
+        <security:intercept-url pattern="/admin**" access="hasRole('ADMIN')" />
+        <security:intercept-url pattern="/dba**" access="hasRole('ADMIN') or hasRole('DBA')" />
+        <!-- 접근 불가능한 곳에 접근할때 에러가 아닌 보여줄 페이지 지정 -->
+        <security:access-denied-handler error-page="/403"/>
+        <!-- 사용자가 만든 로그인 폼을 사용하기 위해서는 이부분을 수정해 준다. -->
+        <security:form-login  
+        login-page="/login"
+        username-parameter="userid"
+        password-parameter="password"
+        default-target-url="/"
+        authentication-failure-url="/login?error" /> <!-- 로그인 실패시 이동할 페이지 -->
+        <security:logout logout-success-url="/login?logout"/> <!-- 로그아웃 성공시 이동할 페이지 -->
+        <!-- csrf 프로텍션 사용하겠다. -->
+        <security:csrf/>
+    </security:http>
+  
+	<!-- Security 사용자 설정 -->
+    <security:authentication-manager >
+    	<!-- 
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="bill"  password="1234"  authorities="ROLE_USER" />
+                <security:user name="admin" password="1234" authorities="ROLE_ADMIN,ROLE_DBA" />
+                <security:user name="dba"   password="1234" authorities="ROLE_DBA" />
+            </security:user-service>
+        </security:authentication-provider>
+    	-->
+    	<!-- DB정보를 이용하여 인증을 처리 하겠다. -->
+    	<security:authentication-provider>
+			 <security:jdbc-user-service 
+			 	data-source-ref="dataSource"
+			 	users-by-username-query="select userid as username, password, 1 from users where userid=?"
+			 	authorities-by-username-query="select username, role from user_roles where username=?"
+			 	/>   	
+    	</security:authentication-provider> 
+    </security:authentication-manager>	
+    
+    <!-- 시큐리트 암호화 객체 등록 -->
+    <bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"/>
+    
+    
+</beans>
