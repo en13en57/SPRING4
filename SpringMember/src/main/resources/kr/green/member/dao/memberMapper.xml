@@ -6,7 +6,7 @@
 
 	<!-- 1. 저장하기 -->
 	<insert id="insert" parameterType="MemberVO">
-		insert into memebr values
+		insert into member values
 		(
 			member_idx_seq.nextval,
 			#{userid},
@@ -33,7 +33,7 @@
 	</select>
 	<!-- 3. 수정하기 -->
 	<update id="update" parameterType="MemberVO">
-		update memeber set
+		update member set
 			username = #{username},
 			nickname = #{nickname},
 			hp = #{hp},
@@ -76,5 +76,8 @@
 	<update id="updatePassword" parameterType="hashmap">
 		update member set password=#{password} where userid=#{userid}
 	</update>
-	
+	<!-- 12. ID로 가져오기 -->
+	<select id="selectUserId" parameterType="string" resultType="MemberVO">
+		select * from member where userid=#{userid}
+	</select>
 </mapper>

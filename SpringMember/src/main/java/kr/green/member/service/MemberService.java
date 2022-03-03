@@ -16,11 +16,11 @@ public interface MemberService {
 	//  6. 비번 변경
 	void updatePassword(MemberVO memberVO);
 	//  7. 인증 완료
-	void updateUse(MemberVO memberVO);
+	MemberVO updateUse(String userid, String col1);
 	//  8. 아이디 중복확인
-	void idCheck(MemberVO memberVO);
+	int idCheck(String userid);
 	//  9. 아이디 찾기
-	void idSearch(MemberVO memberVO);
+	MemberVO idSearch(MemberVO memberVO);
 	// 10. 비번 찾기
-	void passwordSearch(MemberVO memberVO);
+	MemberVO passwordSearch(MemberVO memberVO);
 }

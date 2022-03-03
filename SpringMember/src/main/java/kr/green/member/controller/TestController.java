@@ -1,20 +1,20 @@
 package kr.green.member.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.mail.Message;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.green.member.service.TestService;
@@ -58,5 +58,28 @@ public class TestController {
 		mv.addObject("ofileName", ofileName);
 		mv.addObject("sfileName", sfileName);
 		return mv;
+	}
+	
+	@Autowired
+	private JavaMailSender mailSender;
+	
+	@RequestMapping(value = "/testMail")
+	public String sendMail() {
+		// 메일 보내기 준비하는 객체
+		MimeMessagePreparator preparator = new MimeMessagePreparator() {
+			public void prepare(MimeMessage mimeMessage) throws Exception {
+				mimeMessage.setFrom("itsungnam202111@gmail.com");// 보내는 사람 아이디
+				mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress("itsungnam202111@gmail.com"));// 받는 사람 아이디
+				mimeMessage.setText("메일 내용입니다."); // 내용
+				mimeMessage.setSubject("제목이란다."); // 제목
+			}
+		};
+		try {
+            mailSender.send(preparator);
+            System.out.println("메일을 성공적으로 보냈습니다.");
+        } catch (MailException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return "home";
 	}
 }
