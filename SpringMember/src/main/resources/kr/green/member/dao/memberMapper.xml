@@ -29,7 +29,7 @@
 	</insert>
 	<!-- 2. 1개 얻기 -->
 	<select id="selectByIdx" parameterType="int" resultType="MemberVO">
-		select * from memebr where idx=#{idx}
+		select * from member where idx=#{idx}
 	</select>
 	<!-- 3. 수정하기 -->
 	<update id="update" parameterType="MemberVO">
@@ -68,6 +68,7 @@
 	<select id="selectByUserId" parameterType="hashmap" resultType="MemberVO">
 		select * from member where userid=#{userid} and hp=#{hp}
 	</select>
+	
 	<!-- 10. 인증여부를 변경하는 쿼리 -->
 	<update id="updateUse" parameterType="hashmap">
 		update member set use=#{use} where userid=#{userid} and col1=#{col1}
@@ -76,6 +77,7 @@
 	<update id="updatePassword" parameterType="hashmap">
 		update member set password=#{password} where userid=#{userid}
 	</update>
+	
 	<!-- 12. ID로 가져오기 -->
 	<select id="selectUserId" parameterType="string" resultType="MemberVO">
 		select * from member where userid=#{userid}

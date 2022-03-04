@@ -28,6 +28,6 @@ public interface MemberDAO {
 	void updateUse(HashMap<String, String> map);
 	// 11. 비밀번호 변경하기
 	void updatePassword(HashMap<String, String> map);
-	// 12. 12. ID로 가져오기
+	// 12. ID로 가져오기
 	MemberVO selectUserId(String userid);
 }

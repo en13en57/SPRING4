@@ -10,7 +10,7 @@ public interface MemberService {
 	//  3. 회원 가입
 	void insert(MemberVO memberVO);
 	//  4. 회원 정보 수정
-	void update(MemberVO memberVO);
+	MemberVO update(MemberVO memberVO);
 	//  5. 회원 탈퇴
 	void delete(MemberVO memberVO);
 	//  6. 비번 변경
@@ -23,4 +23,8 @@ public interface MemberService {
 	MemberVO idSearch(MemberVO memberVO);
 	// 10. 비번 찾기
 	MemberVO passwordSearch(MemberVO memberVO);
+	// 11. 임시비번 만들기
+	String makePassword(int length);
+	// 12. id와 비번이 같은것 가져오기
+	MemberVO selectByUserId(MemberVO memberVO);
 }
