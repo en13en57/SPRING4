@@ -69,7 +69,7 @@
     		 <security:password-encoder ref="bCryptPasswordEncoder"/>
 			 <security:jdbc-user-service 
 			 	data-source-ref="dataSource"
-			 	users-by-username-query="select userid as username, password, 1 from member where userid=?"
+			 	users-by-username-query="select userid as username, password, use enabled from member where userid=?"
 			 	authorities-by-username-query="select username, role from member_role where username=?"
 			 	/>   	
     	</security:authentication-provider> 

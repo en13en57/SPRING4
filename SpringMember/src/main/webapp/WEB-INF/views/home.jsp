@@ -24,7 +24,8 @@
 	<a href="test">DB 연결테스트</a>
 	<a href="testMail">메일테스트</a>
 	<a href="board/list">회원전용게시판</a>
-	<a href="insertForm">회원가입하기</a>
+	<br />
+	<hr />
 	<!-- POST로 로그아웃 -->
 	<c:if test='${pageContext.request.userPrincipal.name !=null }'>
 		<c:url value="/logout" var="logoutURL"/>
@@ -33,8 +34,12 @@
 			<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 			<input type="submit" value="로그아웃">
 		</form>
+		<a href="updatePasswordForm">비밀 번호 변경</a>
+		<a href="updateForm">회원 정보 수정</a>
+		<a href="deleteForm">회원 탈퇴</a>
 	</c:if>
 	<c:if test='${user== "anonymousUser" }'>
+		<a href="insertForm">회원가입하기</a>
 		<a href="${pageContext.request.contextPath }/login">로그인</a>
 	</c:if>
 </body>
