@@ -19,14 +19,15 @@ create table member(
 	col1		varchar2(200),
 	col2		varchar2(200),
 	col3		varchar2(200)
-); 
+);
 -- 여기에서 관리자 아이디를 몇개 만들어 놓아야 한다.
--- INSERT INTO MEMBER VALUES (member_idx_seq.nextval,'admin', '123456')
+-- INSERT INTO  MEMBER (idx, userid, password) VALUES (member_idx_seq.nextval,'admin', '123456');
 
 
 SELECT * FROM MEMBER;
 
 CREATE SEQUENCE member_role_idx_seq;
+
 CREATE TABLE member_role(
 	idx NUMBER PRIMARY KEY,
 	username varchar2(100) NOT NULL,

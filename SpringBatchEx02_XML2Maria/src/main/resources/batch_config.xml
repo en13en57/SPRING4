@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<!-- DB연결 정보를 입포트 한다. -->
+	<!-- DB연결 정보를 임포트 한다. -->
 	<import resource="classpath:context-datasource.xml" />
 
 	<!-- 일을 저장할 저장소를 만든다. -->
@@ -19,8 +19,8 @@
 		id="jobLauncher">
 		<property name="jobRepository" ref="jobRepository"></property>
 	</bean>
-
 	<!-- 일을 등록한다. -->
+	
 	<!-- 읽을때 사용할 객체 -->
 	<bean
 		class="org.springframework.batch.item.xml.StaxEventItemReader"
@@ -59,25 +59,6 @@
 		</property>
 	</bean>
 
-	<bean id="flatFileItemWriter"
-		class="org.springframework.batch.item.file.FlatFileItemWriter"
-		scope="step">
-		<property name="resource" value="file:examResult.txt" />
-		<property name="lineAggregator">
-			<bean
-				class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
-				<property name="delimiter" value="," />
-				<property name="fieldExtractor">
-					<bean
-						class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
-						<property name="names"
-							value="studentName, percentage, dob" />
-					</bean>
-				</property>
-			</bean>
-		</property>
-	</bean>
-
 	<!-- 아이템 한개 처리시마다 실행할 프로세스 등록 -->
 	<bean id="itemProcessor"
 		class="kr.green.batch.vo.ExamResultItemProcessor"></bean>
@@ -92,15 +73,9 @@
 
 	<!-- 실제일을 등록한다. -->
 	<batch:job id="examResultJob">
-		<batch:step id="step1" next="step2">
+		<batch:step id="step1">
 			<batch:tasklet transaction-manager="transactionManager">
 				<batch:chunk reader="xmlReader" writer="jdbcItemWriter"
-					processor="itemProcessor" commit-interval="10"></batch:chunk>
-			</batch:tasklet>
-		</batch:step>
-		<batch:step id="step2">
-			<batch:tasklet transaction-manager="transactionManager">
-				<batch:chunk reader="xmlReader" writer="flatFileItemWriter"
 					processor="itemProcessor" commit-interval="10"></batch:chunk>
 			</batch:tasklet>
 		</batch:step>

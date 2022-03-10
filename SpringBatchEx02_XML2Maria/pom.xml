@@ -61,6 +61,17 @@
 			<artifactId>joda-time</artifactId>
 			<version>${joda-time.version}</version>
 		</dependency>
+		<!-- Spring batch -->
+		<dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-core</artifactId>
+            <version>${springbatch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.batch</groupId>
+            <artifactId>spring-batch-infrastructure</artifactId>
+            <version>${springbatch.version}</version>
+        </dependency>
 		<!-- JAXB 추가 시작 -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
